@@ -4,6 +4,6 @@ import * as Lista from './lista';
 
 export default {
     Cancion,
-    Usuario,
+    User,
     Lista
 }

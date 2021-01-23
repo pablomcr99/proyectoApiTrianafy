@@ -5,15 +5,15 @@ const {Schema} = mongoose;
 
 const usuarioSchema = new Schema({
     id:String,
-    nombre:String,
-    nomUsuario:String,
+    fullname:String,
+    username:String,
     email:String,
-    contrasenya:String
+    password:String
 });
 
-const Usuario = mongoose.model('Usuario', usuarioSchema);
+const User = mongoose.model('User', usuarioSchema);
 
-const UsuarioRepository ={
+const userRepository ={
     
     
     async findAll(){
@@ -21,18 +21,24 @@ const UsuarioRepository ={
     },
 
     async findById(id){
-        const result = await Usuario.findById(id).exec();
+        const result = await User.findById(id).exec();
         return result != null ? result : undefined;
     },
 
+    async findByUsername(username) {
+        const result = await Usuario.findByUsername(username).exec(); 
+        return result != null ? result : undefined;   
+     },
+
     async create(nuevoUsuario) {
-        const usuario= new Usuario({
+        const usuario= new User({
             id:nuevoUsuario.id,
-            nombre:nuevoUsuario.nombre,
-            nomUsuario:nuevoUsuario.nomUsuario,
+            fullname:nuevoUsuario.fullname,
+            username:nuevoUsuario.username,
             email:nuevoUsuario.email,
-            contrasenya:nuevoUsuario.contrasenya
+            password:nuevoUsuario.password
         });
+        nuevoUsuario.password = bcrypt.hashSync('12345678', parseInt(process.env.BCRYPT_ROUNDS));
         const result = await usuario.save();
         return result;
     },
@@ -52,7 +58,7 @@ const UsuarioRepository ={
     },
 
     async delete(id) {
-        await Usuario.findByIdAndRemove(id).exec();
+        await User.findByIdAndRemove(id).exec();
     }
 
 
@@ -60,6 +66,6 @@ const UsuarioRepository ={
 
 
 export {
-    Usuario,
-    UsuarioRepository
+    User,
+    userRepository
 }

@@ -6,6 +6,7 @@ import morgan from "morgan";
 import morganBody from "morgan-body";
 import { param } from 'express-validator';
 import mongoose from "mongoose"
+import passport from './services/passport';
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'))
 morganBody(app);
-
+app.use(passport.initialize());
 
 // Inicialización del servidor y conexión a base de datos
 
