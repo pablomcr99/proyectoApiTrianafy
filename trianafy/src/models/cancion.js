@@ -4,7 +4,6 @@ const {Schema} = mongoose;
 
 
 const cancionSchema = new Schema({
-    id:String,
     title:String,
     artist:String,
     album:String,
@@ -29,7 +28,7 @@ const CancionRepository={
 
     async create(nuevaCancion) {
         const cancion = new Cancion({
-            id : nuevaCancion.id,
+           
             title : nuevaCancion.title,
             artist : nuevaCancion.artist,
             album : nuevaCancion.album,

@@ -4,7 +4,6 @@ const {Schema} = mongoose;
 //id nombre completo   nomUsuario  email  contraseña
 
 const usuarioSchema = new Schema({
-    id:String,
     fullname:String,
     username:String,
     email:String,
@@ -32,7 +31,6 @@ const userRepository ={
 
     async create(nuevoUsuario) {
         const usuario= new User({
-            id:nuevoUsuario.id,
             fullname:nuevoUsuario.fullname,
             username:nuevoUsuario.username,
             email:nuevoUsuario.email,

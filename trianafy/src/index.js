@@ -16,6 +16,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'))
 morganBody(app);
 app.use(passport.initialize());
+app.use((req, res, next) => {
+  // Para cualquier petición, añadimos en su contexto
+  req.context = {
+    // Todos los modelos
+    models,
+    // El "usuario actual". Ahora mismo simula que hayamos hecho un login
+    // Más adelante, lo podremos conseguir de otra forma.
+    // me: models.users.userRepository.findById(1)
+  };
+  next();
+});
 
 // Inicialización del servidor y conexión a base de datos
 
