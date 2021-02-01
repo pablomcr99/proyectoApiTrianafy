@@ -16,7 +16,7 @@ const userRepository ={
     
     
     async findAll(){
-        return await Usuario.find().exec();
+        return await User.find().exec();
     },
 
     async findById(id){
@@ -25,24 +25,28 @@ const userRepository ={
     },
 
     async findByUsername(username) {
-        const result = await Usuario.findByUsername(username).exec(); 
+        const result = await User.findOne({username:username}).exec(); 
+        return result != null ? result : undefined;   
+     },
+
+     async findByEmail(email) {
+        const result = await User.findOne({email:email}).exec(); 
         return result != null ? result : undefined;   
      },
 
     async create(nuevoUsuario) {
         const usuario= new User({
-            fullname:nuevoUsuario.fullname,
-            username:nuevoUsuario.username,
-            email:nuevoUsuario.email,
-            password:nuevoUsuario.password
+            fullname: nuevoUsuario.fullname,
+            username: nuevoUsuario.username,
+            email: nuevoUsuario.email,
+            password: nuevoUsuario.password
         });
-        nuevoUsuario.password = bcrypt.hashSync('12345678', parseInt(process.env.BCRYPT_ROUNDS));
         const result = await usuario.save();
         return result;
     },
 
     async updateById(id, usuarioModificado) {
-        const usuario = await Usuario.findById(id);
+        const usuario = await User.findById(id);
 
         if (usuario == null) {
             return undefined;

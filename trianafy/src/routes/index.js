@@ -1,11 +1,10 @@
 import { Router } from 'express';
+import auth from './auth';
+import lists from './lists';
+import songs from './songs';
 
-const router = Router();
-
-router.get('/', /* método controlador */)
-router.get('/me', /* método controlador */);
-router.get('/:id', /* método controlador */);
-
-// Resto de métodos del router
-
-export default router;
+export default {
+    auth,
+    songs,
+    lists
+}

@@ -21,7 +21,7 @@ const CancionRepository={
 
 
     async findById(id){
-        const result = await (await Cancion.findById(id)).exec();
+        const result = await Cancion.findById(id).exec();
         return result != null ? result : undefined;
 
     },
@@ -39,7 +39,7 @@ const CancionRepository={
     },
 
     async updateById(id, cancionModificada) {
-        const cancion = await Cancion.findById(id);
+        const cancion = await Cancion.findById(id).exec();
 
         if (cancion == null) {
             return undefined;
@@ -48,9 +48,7 @@ const CancionRepository={
         }
     },
 
-    async update(cancionModificada) {
-        return await this.updateById(cancionModificada.id, cancionModificada);
-    },
+   
 
     async delete(id) {
         await Cancion.findByIdAndRemove(id).exec();

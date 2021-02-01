@@ -1,30 +1,35 @@
+import 'dotenv/config';
 import { JwtService } from '../services/jwt';
+import bcrypt from 'bcryptjs';
+import {User,userRepository} from '../models/user';
 
 const AuthController = {
 
-    register: (req, res, next) => {
-        
+    register: async(req, res, next) => {
+        try{
+        let usuarioCreado = await userRepository.create({
+            username: req.body.username,
+            email: req.body.email,
+            fullname: req.body.fullname, 
+            password:bcrypt.hashSync(req.body.password, parseInt(process.env.BCRYPT_ROUNDS))});
 
-
-        let usuarioCreado = userRepository.create(
-            new User(req.body.username, req.body.email, 
-                        bcrypt.hashSync(req.body.password, parseInt(process.env.BCRYPT_ROUNDS))));
-
-        // Devolvemos todos los datos del usuario menos la contraseña                
-        res.status(201).json({
-            id: usuarioCreado.id,
-            username: usuarioCreado.username,
-            email: usuarioCreado.email
-        });
+                        
+        res.status(201).json(usuarioCreado);
+        }catch(err){
+            res.status(404).json();
+        }
     },
-    login: (req, res, next) => {
-        // Dado que la mitad del esfuerzo lo hace la función password del servicio passport
-        // Aquí tan solo tenemos que preocuparnos de generar y devolver el token
-        const token = JwtService.sign(req.user);
+    login: async(req, res, next) => {
+        
+        const token = await JwtService.sign(req.user);
         res.status(201).json({
             user: req.user,
             token: token
         });
     }
     
+}
+
+export {
+    AuthController
 }

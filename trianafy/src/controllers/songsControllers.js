@@ -1,15 +1,5 @@
-// post songs
-//get songs
-// get song/{id}
-//put song/{id}
-//delete song/{id}
 
-// post /lists/{id1}/song/{id2}
-// get /lists/{id1}/song/{id2}
-// get /lists/{id}/songs
-// delete /lists/{id1}/song/{id2}
-
-import {CancionRepository} from '../models/cancion';
+import {Cancion,CancionRepository} from '../models/cancion';
 
 
 const CancionController = {
@@ -37,13 +27,17 @@ const CancionController = {
 
 //post songs
     nuevaCancion: async (req, res) => {
-        let cancion = await CancionRepository.create({
-            title: req.body.title,
-            artist: req.body.artist,
-            album: req.body.album,
-            year: req.body.year
-        });
-        res.status(201).json(cancion);
+        try{
+            let cancion = await CancionRepository.create({
+                title: req.body.title,
+                artist: req.body.artist,
+                album: req.body.album,
+                year: req.body.year
+            });
+            res.status(201).json(cancion);
+        }catch(error){
+            res.status(400).json({Error:`Se ha producido un error con su peticion :${error.message}`})
+        }
     },
 
     editarCancion: async (req, res) => {
@@ -55,15 +49,19 @@ const CancionController = {
                 year: req.body.year
             });
         if (cancion != undefined) {
-            res.json(cancion);
+            res.sendStatus(204);
         } else {
             res.sendStatus(404);
         }
     },
 
     eliminarCancion: async (req, res) => {
-        await CancionRepository.delete(req.params.id);
-        res.sendStatus(204);
+        const result=await CancionRepository.delete(req.params.id);
+        if(result != undefined){
+            res.sendStatus(204)
+        }else{
+            res.sendStatus(404);
+        }
     },
 
     

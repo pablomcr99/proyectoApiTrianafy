@@ -7,6 +7,7 @@ import morganBody from "morgan-body";
 import { param } from 'express-validator';
 import mongoose from "mongoose"
 import passport from './services/passport';
+import routes from './routes';
 
 const app = express();
 
@@ -16,19 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'))
 morganBody(app);
 app.use(passport.initialize());
-app.use((req, res, next) => {
-  // Para cualquier petición, añadimos en su contexto
-  req.context = {
-    // Todos los modelos
-    models,
-    // El "usuario actual". Ahora mismo simula que hayamos hecho un login
-    // Más adelante, lo podremos conseguir de otra forma.
-    // me: models.users.userRepository.findById(1)
-  };
-  next();
-});
+app.use('/auth',routes.auth);
+app.use('/songs',routes.songs);
+app.use('/list',routes.lists);
 
-// Inicialización del servidor y conexión a base de datos
 
 mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, err => {
   
@@ -38,7 +30,7 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
     console.log(`Conexión correcta a la base de datos en la URI ${process.env.DB_URI}`);
     app.listen(process.env.PORT, () =>
       console.log(
-        `¡Aplicación de ejemplo escuchando en el puerto ${process.env.PORT}!`
+        `¡Aplicación escuchando en el puerto ${process.env.PORT}!`
       )
     );
   }

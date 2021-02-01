@@ -1,27 +1,28 @@
-// post /lists
-// get /lists
-// get /list/{id}
-// put /list/{id}
-
-//delete /list/{id}
-
-
 import { Router } from 'express';
 import { ListaController } from '../controllers/listsController';
+import { body } from 'express-validator';
 import {token} from '../services/passport';
+import { validar } from '../middlewares/validacion';
 
 const router = Router();
 
-router.get('/lists',token(), ListaController.todasLaslistas);
+router.get('/',token(), ListaController.todasLaslistas);
 
-router.get('/list/:id',token(), ListaController.listaPorId);
+router.get('/:id',token(), ListaController.descPorId);
 
-router.post('/list/',token(), ListaController.nuevaLista);
+router.post('/',token(),validar, ListaController.nuevaLista);
 
-router.put('/list/:id',token(), ListaController.editarLista);
+router.put('/:id',token(),validar, ListaController.editarLista);
 
-router.delete('/list/:id',token(), ListaController.eliminarLista);
+router.delete('/:id',token(), ListaController.eliminarLista);
 
+//lista+canciones
+
+router.get('/:id/songs',token(),ListaController.cancionesLista);
+
+router.post('/:id/songs/:idCancion',token(),ListaController.addCancionALista);
+
+router.delete('/:id/songs/:idCancion',token(),ListaController.eliminarCancionLista);
 
 
 export default router;
