@@ -80,6 +80,15 @@ const ListaController = {
         }
     },
 
+    obtenerCancionLista:async(req,res)=>{
+        let result = await ListaRepository.cancionLista(req.params.id,req.params.idCancion,req.user.id);
+        if(result==null){
+            res.sendStatus(404);
+        }else{
+            res.json(result);
+        }
+    },
+
     eliminarCancionLista: async(req,res) =>{
         let result = await ListaRepository.eliminarCancion(req.params.id,req.params.idCancion,req.user.id);
         if(result !=null){
