@@ -83,17 +83,16 @@ const ListaRepository ={
     },
 
     async cancionLista(id,idCancion,idUsuario){
-        const result=false;
         const lista= await Lista.findOne({_id:id, idUsuario:idUsuario}).populate('listaCanciones').exec();
         const cancion = await Cancion.findById(idCancion);
-        for(let i=0;i<=lista.listaCanciones.length;i++){
-            if(lista.listaCanciones[i]._id=idCancion){
-                result=true;
+        if(lista !=null && cancion != null){
+            for(let i=0;i<=lista.listaCanciones.length;i++){
+                if(lista.listaCanciones[i]._id=idCancion){
+                    return cancion;
+                }else{
+                    return null;
+                }
             }
-        }if(result==true){
-            return cancion;
-        }else{
-            return null;
         }
 
     },

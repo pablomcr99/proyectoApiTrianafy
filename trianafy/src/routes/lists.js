@@ -22,7 +22,7 @@ router.get('/:id/songs',token(),ListaController.cancionesLista);
 
 router.post('/:id/songs/:idCancion',token(),ListaController.addCancionALista);
 
-router.post('/:id/songs/:idCancion',token(),ListaController.obtenerCancionLista);
+router.get('/:id/songs/:idCancion',token(),ListaController.obtenerCancionLista);
 
 router.delete('/:id/songs/:idCancion',token(),ListaController.eliminarCancionLista);
 
